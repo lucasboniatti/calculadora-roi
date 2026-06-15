@@ -247,7 +247,7 @@ const css = `
     width: 100%;
     height: 3px;
     border-radius: 999px;
-    background: var(--ink-200);
+    background: var(--border-strong);
     outline: none;
     cursor: pointer;
     display: block;
