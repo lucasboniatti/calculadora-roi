@@ -1,0 +1,259 @@
+/* ============================================================================
+   DIGITAL ROCKETS — Foundations: Color + Type
+   ========================================================================== */
+
+/* Space Grotesk — DATA / NUMERIC */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+/* Work Sans — PRIMARY — self-hosted */
+@font-face {
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/WorkSans-VariableFont_wght.ttf') format('truetype-variations');
+}
+@font-face {
+  font-family: 'Work Sans';
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/WorkSans-Italic-VariableFont_wght.ttf') format('truetype-variations');
+}
+
+:root {
+  /* ---- Brand core ------------------------------------------------------- */
+  --denim:           #0E5FB8;
+  --max-yellow:      #F6F930;
+  --jet-charcoal:    #2F2F2F;
+  --off-white:       #FCFCFC;
+
+  /* ---- Denim (blue) scale ---------------------------------------------- */
+  --blue-50:   #EAF1FA;
+  --blue-100:  #CFE0F4;
+  --blue-200:  #9DBFE8;
+  --blue-300:  #5E93D7;
+  --blue-400:  #2E73C7;
+  --blue-500:  #0E5FB8;
+  --blue-600:  #0C4F99;
+  --blue-700:  #0A3E78;
+  --blue-800:  #082F5B;
+  --blue-900:  #051E3A;
+
+  /* ---- Neutral scale --------------------------------------------------- */
+  --ink-900:   #1A1A1A;
+  --ink-800:   #2F2F2F;
+  --ink-700:   #434343;
+  --ink-600:   #5C5C5C;
+  --ink-500:   #7B7B7B;
+  --ink-400:   #9E9E9E;
+  --ink-300:   #C7C7C7;
+  --ink-200:   #E2E2E2;
+  --ink-150:   #EAEAEA;
+  --ink-100:   #F1F1F1;
+  --ink-50:    #F7F7F7;
+  --white:     #FCFCFC;
+
+  /* ---- Yellow accent --------------------------------------------------- */
+  --yellow-500: #F6F930;
+  --yellow-600: #E2E50F;
+  --yellow-700: #B9BC0A;
+
+  /* ---- Semantic: surfaces ---------------------------------------------- */
+  --bg:            var(--off-white);
+  --bg-subtle:     var(--ink-50);
+  --bg-muted:      var(--ink-100);
+  --surface:       #FFFFFF;
+  --surface-dark:  var(--jet-charcoal);
+  --surface-brand: var(--denim);
+
+  /* ---- Semantic: text -------------------------------------------------- */
+  --fg:            var(--ink-800);
+  --fg-strong:     var(--ink-900);
+  --fg-muted:      var(--ink-600);
+  --fg-subtle:     var(--ink-400);
+  --fg-on-dark:    var(--off-white);
+  --fg-on-brand:   var(--off-white);
+  --fg-brand:      var(--denim);
+  --fg-accent:     var(--yellow-700);
+
+  /* ---- Semantic: borders ----------------------------------------------- */
+  --border:        var(--ink-200);
+  --border-strong: var(--ink-300);
+  --border-brand:  var(--denim);
+  --border-on-dark: rgba(252,252,252,0.16);
+
+  /* ---- Semantic: status ------------------------------------------------ */
+  --success: #1E9E5A;
+  --warning: #E8A21B;
+  --danger:  #D2402F;
+  --info:    var(--denim);
+
+  /* ---- Type families --------------------------------------------------- */
+  --font-sans:    'Work Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-num:     'Space Grotesk', 'Work Sans', ui-monospace, sans-serif;
+  --font-mono:    'Space Grotesk', ui-monospace, 'SFMono-Regular', 'Menlo', monospace;
+
+  /* ---- Type weights ---------------------------------------------------- */
+  --w-light: 300;
+  --w-reg:   400;
+  --w-med:   500;
+  --w-semi:  600;
+  --w-bold:  700;
+
+  /* ---- Type scale ------------------------------------------------------ */
+  --text-xs:   0.75rem;
+  --text-sm:   0.875rem;
+  --text-base: 1rem;
+  --text-md:   1.125rem;
+  --text-lg:   1.375rem;
+  --text-xl:   1.75rem;
+  --text-2xl:  2.25rem;
+  --text-3xl:  3rem;
+  --text-4xl:  3.75rem;
+  --text-5xl:  4.75rem;
+
+  --leading-tight:   1.05;
+  --leading-snug:    1.2;
+  --leading-normal:  1.5;
+  --leading-relaxed: 1.65;
+
+  --tracking-tight:  -0.02em;
+  --tracking-normal: 0;
+  --tracking-wide:   0.04em;
+  --tracking-caps:   0.12em;
+
+  /* ---- Spacing (4px base) ---------------------------------------------- */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+  --space-32: 128px;
+
+  /* ---- Radii ----------------------------------------------------------- */
+  --radius-xs:   4px;
+  --radius-sm:   6px;
+  --radius-md:   10px;
+  --radius-lg:   16px;
+  --radius-xl:   24px;
+  --radius-pill: 999px;
+  --cut: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+
+  /* ---- Shadows --------------------------------------------------------- */
+  --shadow-xs:    0 1px 2px rgba(26,26,26,0.06);
+  --shadow-sm:    0 2px 6px rgba(26,26,26,0.08);
+  --shadow-md:    0 8px 24px rgba(26,26,26,0.10);
+  --shadow-lg:    0 18px 48px rgba(26,26,26,0.14);
+  --shadow-brand: 0 6px 18px rgba(14,95,184,0.18);
+
+  /* ---- Gradients ------------------------------------------------------- */
+  --grad-denim:        linear-gradient(180deg, #2270C8 0%, #0E5FB8 100%);
+  --grad-denim-hover:  linear-gradient(180deg, #1A66BD 0%, #0C4F99 100%);
+  --grad-accent:       linear-gradient(180deg, #FBFE63 0%, #F6F930 100%);
+  --grad-charcoal:     linear-gradient(180deg, #3D3D3D 0%, #2A2A2A 100%);
+
+  /* ---- Motion ---------------------------------------------------------- */
+  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast:   140ms;
+  --dur-base:   240ms;
+  --dur-slow:   420ms;
+}
+
+html {
+  font-family: var(--font-sans);
+  color: var(--fg);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+body {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  color: var(--fg);
+  margin: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-sans);
+  color: var(--fg-strong);
+  margin: 0;
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-tight);
+  font-weight: var(--w-bold);
+}
+
+/* ── Animações ─────────────────────────────────────────────────────────── */
+.fade-in {
+  animation: fadeIn 0.5s var(--ease-out) both;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.hero-enter {
+  opacity: 0;
+  transform: translateY(22px);
+  animation: heroEnter 0.85s var(--ease-out) both;
+}
+.hero-enter-1 { animation-delay: 0.05s; }
+.hero-enter-2 { animation-delay: 0.18s; }
+.hero-enter-3 { animation-delay: 0.30s; }
+.hero-enter-4 { animation-delay: 0.42s; }
+@keyframes heroEnter {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Hover cards ───────────────────────────────────────────────────────── */
+.card-hover {
+  transition: transform var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out);
+}
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+/* ── Shimmer no CTA ────────────────────────────────────────────────────── */
+.btn-shimmer {
+  position: relative;
+  overflow: hidden;
+  transition: transform var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out);
+}
+.btn-shimmer:hover  { transform: translateY(-1px) scale(1.01); }
+.btn-shimmer:active { transform: scale(0.98); transition-duration: 0.08s; }
+.btn-shimmer::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -120%;
+  width: 50%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent);
+  animation: shimmer 3.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  pointer-events: none;
+}
+@keyframes shimmer {
+  0%       { left: -120%; }
+  45%, 100% { left: 170%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (max-width: 768px) {
+  h1 { font-size: var(--text-2xl); }
+  h2 { font-size: var(--text-xl); }
+  h3 { font-size: var(--text-lg); }
+}
