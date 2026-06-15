@@ -258,7 +258,7 @@ const css = `
     width: 16px; height: 16px;
     border-radius: 50%;
     background: var(--denim);
-    border: 2px solid white;
+    border: 2px solid var(--bg);
     box-shadow: 0 0 0 2px rgba(14,95,184,0.2), var(--shadow-sm);
     cursor: pointer;
     transition: transform 140ms ease, box-shadow 140ms ease;
@@ -271,7 +271,7 @@ const css = `
     width: 16px; height: 16px;
     border-radius: 50%;
     background: var(--denim);
-    border: 2px solid white;
+    border: 2px solid var(--bg);
     cursor: pointer;
   }
   /* variante verde para margem */
