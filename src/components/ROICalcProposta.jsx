@@ -58,9 +58,9 @@ const ROICalcProposta = () => {
           <p style={S.eyebrow}>Calculadora de ROI</p>
           <div style={S.titleRow}>
             <img src="/logo-mark.png" alt="Digital Rockets" style={S.logoMark} />
-            <h2 style={S.h2}>Quanto você pode faturar<br />com a Digital Rockets?</h2>
+            <h2 style={S.h2} className="calc-h2">Quanto você pode faturar<br className="desktop-br" /> com a Digital Rockets?</h2>
           </div>
-          <p style={S.lead}>Preencha os dados e veja em tempo real quanto você pode gerar<br />em leads, vendas e lucro com nossa gestão estratégica.</p>
+          <p style={S.lead} className="calc-lead">Preencha os dados e veja em tempo real quanto você pode gerar<br />em leads, vendas e lucro com nossa gestão estratégica.</p>
 
           <div style={S.sliderBox}>
             <SliderRow
@@ -233,6 +233,7 @@ const css = `
     width: 100%;
   }
   .calc-left  { display: flex; flex-direction: column; }
+  .desktop-br { display: block; }
   .calc-right { display: flex; flex-direction: column; }
   .result-grid {
     display: grid;
@@ -285,6 +286,10 @@ const css = `
 
   @media (max-width: 860px) {
     .calc-wrap { grid-template-columns: 1fr; gap: 32px; }
+    .calc-h2 { font-size: 1.15rem !important; line-height: 1.3 !important; }
+    .desktop-br { display: none; }
+    .calc-lead { margin-top: 6px !important; margin-bottom: 16px !important; }
+    .calc-lead br { display: none; }
   }
   @media (max-width: 480px) {
     .result-grid { grid-template-columns: 1fr; }
