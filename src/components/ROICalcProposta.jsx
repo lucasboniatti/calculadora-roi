@@ -23,9 +23,16 @@ const usePersisted = (key, defaultValue) => {
 };
 import '../styles/design-system.css';
 
-const fmtBRL = (n) => "R$ " + Math.round(n).toLocaleString("pt-BR", { maximumFractionDigits: 0 });
-const fmtN   = (n) => Math.round(n).toLocaleString("pt-BR");
-const fmtROI = (n) => Math.round(n).toLocaleString("pt-BR") + "%";
+// padrão de arredondamento: parte decimal até ,5 arredonda para baixo, a partir de ,51 para cima
+// (epsilon evita erro de ponto flutuante; +0 evita "-0")
+const arredonda = (n, casas = 0) => {
+  const f = 10 ** casas;
+  return (Math.sign(n) * Math.ceil(Math.abs(n) * f - 0.5 - 1e-9)) / f + 0;
+};
+const fmtBRL = (n) => "R$ " + arredonda(n).toLocaleString("pt-BR", { maximumFractionDigits: 0 });
+const fmtN   = (n) => arredonda(n).toLocaleString("pt-BR");
+const fmtROI = (n) => arredonda(n).toLocaleString("pt-BR") + "%";
+const fmtDec = (n) => arredonda(n, 1).toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 
 const investValues = [
   300,
@@ -78,14 +85,15 @@ const ROICalcProposta = () => {
   const [margemAtiva,      setMargemAtiva]      = usePersisted('margemAtiva',      false);
   const [indicacoesAtiva,  setIndicacoesAtiva]  = usePersisted('indicacoesAtiva',  false);
   const [indicacoesPorCliente, setIndicacoesPorCliente] = usePersisted('indicacoesPorCliente', 3);
+  const [conversaoIndicacao, setConversaoIndicacao] = usePersisted('conversaoIndicacao', 10);
   const [indicacoesEditing, setIndicacoesEditing] = useState(false);
   const [indicacoesDraft,   setIndicacoesDraft]   = useState('');
 
   const investido   = investExato  ?? investValues[investIdx];
   const cpl         = cplExato     ?? cplValues[cplIdx];
   const ticket      = ticketExato  ?? ticketValues[ticketIdx];
-  const leads       = cpl > 0 ? Math.floor(investido / cpl) : 0;
-  const vendas      = Math.floor(leads * (conversao / 100));
+  const leads       = cpl > 0 ? arredonda(investido / cpl) : 0;
+  const vendas      = arredonda(leads * (conversao / 100));
   const faturamento = vendas * ticket;
   const lucro       = faturamento * (margem / 100);
   const roi         = investido > 0 ? ((lucro - investido) / investido) * 100 : 0;
@@ -98,7 +106,7 @@ const ROICalcProposta = () => {
   const ltv                 = recompraAtiva && vendas > 0 ? ticket * recompraQtd : 0;
 
   const indicacoesTotais              = indicacoesAtiva ? vendas * indicacoesPorCliente : 0;
-  const vendasIndicacoes              = indicacoesAtiva ? Math.floor(indicacoesTotais * (conversao / 100)) : 0;
+  const vendasIndicacoes              = indicacoesAtiva ? arredonda(indicacoesTotais * (conversaoIndicacao / 100)) : 0;
   const ticketIndicacoes              = recompraAtiva ? ticket * recompraQtd : ticket;
   const faturamentoSoIndicacoes       = indicacoesAtiva ? vendasIndicacoes * ticketIndicacoes : 0;
   const faturamentoIndicacoes         = indicacoesAtiva ? (recompraAtiva ? faturamento + recompraFaturamento : faturamento) + faturamentoSoIndicacoes : 0;
@@ -106,7 +114,7 @@ const ROICalcProposta = () => {
 
   const handleWhatsApp = () => {
     const lines = [
-      '🚀 *Projeção de ROI — Digital Rockets*',
+      '*Projeção de ROI - Digital Rockets*',
       '',
       '*Dados da campanha*',
       `• Investimento em tráfego: ${fmtBRL(investido)}`,
@@ -118,7 +126,7 @@ const ROICalcProposta = () => {
       `• Leads gerados: ${fmtN(leads)}`,
       `• Vendas fechadas: ${fmtN(vendas)}`,
       `• CAC: ${fmtBRL(cac)}`,
-      `• ROAS: ${roas.toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}x`,
+      `• ROAS: ${fmtDec(roas)}x`,
       `• Faturamento total: ${fmtBRL(faturamento)}`,
     ];
 
@@ -142,6 +150,7 @@ const ROICalcProposta = () => {
       lines.push('*Com indicações*');
       lines.push(`• Indicações por cliente: ${indicacoesPorCliente}×`);
       lines.push(`• Indicações recebidas: ${fmtN(indicacoesTotais)}`);
+      lines.push(`• Taxa de conversão das indicações: ${conversaoIndicacao}%`);
       lines.push(`• Vendas via indicações: ${fmtN(vendasIndicacoes)}`);
       lines.push(`• Faturamento com indicações: ${fmtBRL(faturamentoIndicacoes)}`);
       lines.push(`• Fat. só indicações: ${fmtBRL(faturamentoSoIndicacoes)}`);
@@ -149,7 +158,7 @@ const ROICalcProposta = () => {
     }
 
     lines.push('');
-    lines.push('_Calculadora de ROI — roi.dr-flow.com_');
+    lines.push('_Calculadora de ROI - roi.dr-flow.com_');
 
     const text = encodeURIComponent(lines.join('\n'));
     window.open(`https://wa.me/5551995597332?text=${text}`, '_blank');
@@ -353,6 +362,18 @@ const ROICalcProposta = () => {
                 />
               )}
             </div>
+
+            {/* ── Taxa de conversão das indicações ── */}
+            {indicacoesAtiva && (
+              <SliderRow
+                purple
+                label="Taxa de conversão indicação"
+                value={conversaoIndicacao} min={0.5} max={100} step={0.5}
+                displayValue={conversaoIndicacao} suffix="%"
+                onChange={setConversaoIndicacao}
+                onDirectInput={v => setConversaoIndicacao(v)}
+              />
+            )}
           </div>
           {/* ── botões de ação ── */}
           <div className="no-print" style={{ display: 'flex', gap: 8, marginTop: 16, justifyContent: 'flex-start' }}>
@@ -392,7 +413,7 @@ const ROICalcProposta = () => {
             <StatCard label="Leads gerados"   value={fmtN(leads)} />
             <StatCard label="Vendas fechadas" value={fmtN(vendas)} />
             <StatCard label="CAC"  value={cac  > 0 ? fmtBRL(cac)  : '—'} sub="Custo por cliente" />
-            <StatCard label="ROAS" value={roas > 0 ? roas.toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + 'x' : '—'} sub="Receita / R$ investido" />
+            <StatCard label="ROAS" value={roas > 0 ? fmtDec(roas) + 'x' : '—'} sub="Receita / R$ investido" />
           </div>
 
           {/* card faturamento — destaque denim */}
@@ -410,7 +431,7 @@ const ROICalcProposta = () => {
           {margemAtiva && (
             <div className="result-grid" style={{ marginBottom: 10 }}>
               <StatCard label="Lucro estimado" value={fmtBRL(lucro)} valueStyle={{ color: 'var(--success)' }} />
-              <StatCard label="Payback projetado" value={lucro > 0 ? (() => { const m = investido / lucro; return m < 1 ? `${Math.round(m * 30)} dias` : `${m.toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} meses`; })() : '—'} />
+              <StatCard label="Payback projetado" value={lucro > 0 ? (() => { const m = investido / lucro; return m < 1 ? `${arredonda(m * 30)} dias` : `${fmtDec(m)} meses`; })() : '—'} />
             </div>
           )}
 
@@ -459,7 +480,7 @@ const ROICalcProposta = () => {
                 <div style={S.recompraCard}>
                   <p style={S.fatLabel}>Vendas fechadas</p>
                   <p style={{ ...S.fatValue, fontSize: 'var(--text-xl)', color: 'var(--purple)' }}>{fmtN(vendasIndicacoes)}</p>
-                  <p style={S.statSub}>{fmtN(indicacoesTotais)} ind. × {conversao}% conversão</p>
+                  <p style={S.statSub}>{fmtN(indicacoesTotais)} ind. × {conversaoIndicacao}% conversão</p>
                 </div>
               </div>
               {/* linha 2: faturamento total recompra + indicações (largura cheia) */}
@@ -501,7 +522,7 @@ const ROICalcProposta = () => {
 };
 
 /* ── SliderRow ─────────────────────────────────────────────────────────── */
-const SliderRow = ({ label, value, min, max, step = 1, displayValue, prefix, suffix, onChange, onDirectInput, last }) => {
+const SliderRow = ({ label, value, min, max, step = 1, displayValue, prefix, suffix, onChange, onDirectInput, last, purple }) => {
   const [editing, setEditing] = useState(false);
   const [draft,   setDraft]   = useState('');
 
@@ -522,18 +543,18 @@ const SliderRow = ({ label, value, min, max, step = 1, displayValue, prefix, suf
             onChange={e => setDraft(e.target.value)}
             onBlur={commitEdit}
             onKeyDown={e => { if (e.key === 'Enter') commitEdit(); if (e.key === 'Escape') setEditing(false); }}
-            style={S.editInput}
+            style={purple ? { ...S.editInput, color: 'var(--purple)', borderBottomColor: 'rgba(124,58,237,0.35)' } : S.editInput}
           />
         ) : (
-          <span onClick={startEdit} title="Clique para editar" style={S.sliderValue}>
-            {prefix && prefix + ' '}{Number(displayValue).toLocaleString('pt-BR', { maximumFractionDigits: 1 })}{suffix}
+          <span onClick={startEdit} title="Clique para editar" style={purple ? { ...S.sliderValue, color: 'var(--purple)', borderBottomColor: 'rgba(124,58,237,0.35)' } : S.sliderValue}>
+            {prefix && prefix + ' '}{arredonda(Number(displayValue), 1).toLocaleString('pt-BR', { maximumFractionDigits: 1 })}{suffix}
           </span>
         )}
       </div>
       <input
         type="range" min={min} max={max} step={step} value={value}
         onChange={e => onChange(Number(e.target.value))}
-        className="roi-range"
+        className={purple ? 'roi-range roi-range-purple' : 'roi-range'}
       />
     </div>
   );

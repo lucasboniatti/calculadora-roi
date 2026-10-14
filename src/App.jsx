@@ -24,7 +24,7 @@ const App = () => {
         title={dark ? 'Modo claro' : 'Modo escuro'}
         style={{
           position: 'fixed',
-          bottom: 20,
+          top: 20,
           right: 20,
           zIndex: 999,
           width: 40,
@@ -44,7 +44,7 @@ const App = () => {
         onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.1)'; }}
         onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)'; }}
       >
-        {dark ? (
+        {!dark ? (
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--fg-muted)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <circle cx="12" cy="12" r="4" />
             <line x1="12" y1="2"  x2="12" y2="4"  />
