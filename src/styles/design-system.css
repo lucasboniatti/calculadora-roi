@@ -88,6 +88,7 @@
   --warning: #E8A21B;
   --danger:  #D2402F;
   --info:    var(--denim);
+  --purple:  #7C3AED;
 
   /* ---- Type families --------------------------------------------------- */
   --font-sans:    'Work Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
